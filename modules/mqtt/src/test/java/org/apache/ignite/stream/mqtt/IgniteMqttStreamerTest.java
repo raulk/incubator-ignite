@@ -15,26 +15,36 @@
  * limitations under the License.
  */
 
-package org.apache.ignite.stream;
+package org.apache.ignite.stream.mqtt;
 
-import java.util.Map;
+import org.apache.ignite.testframework.junits.common.GridCommonAbstractTest;
+
+import org.junit.After;
+import org.junit.Before;
 
 /**
- * Stream tuple extractor to convert a message to a single Ignite key-value tuple.
- * <p>
- * Alternatively, {@link StreamMultipleTupleExtractor} can be used in cases where a single message/event may
- * produce more than one tuple.
- * <p>
- * NOTE: This interface supersedes the former {@link StreamTupleExtractor} which is now deprecated.
+ * Test for {@link MqttStreamer}.
  *
- * @see StreamMultipleTupleExtractor
+ * @author Raul Kripalani
  */
-public interface SingleStreamTupleExtractor<T, K, V> {
-    /**
-     * Extracts a key-value tuple from a message.
-     *
-     * @param msg Message.
-     * @return Key-value tuple.
-     */
-    public Map.Entry<K, V> extract(T msg);
+public class IgniteMqttStreamerTest extends GridCommonAbstractTest {
+
+    /** Constructor. */
+    public IgniteMqttStreamerTest() {
+        super(true);
+    }
+
+    @Before @SuppressWarnings("unchecked")
+    public void beforeTest() throws Exception {
+        grid().<Integer, String>getOrCreateCache(defaultCacheConfiguration());
+
+    }
+
+    @After
+    public void afterTest() throws Exception {
+        grid().cache(null).clear();
+
+
+    }
+
 }
